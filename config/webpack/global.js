@@ -10,7 +10,8 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 var rootPublic = path.resolve('./src');
 var NODE_ENV = process.env.NODE_ENV || "production";
 var DEVELOPMENT = NODE_ENV === "production" ? false : true;
-var stylesLoader = 'css-loader?root=' + rootPublic + '&sourceMap!postcss-loader!sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true';
+var stylesLoader = 'css-loader?root=' + rootPublic + '&postcss-loader!sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true';
+// sourceMap! in cssloader avoids using background-images
 
 module.exports = function (_path) {
   var rootAssetPath = _path + 'src';
