@@ -36,7 +36,8 @@ module.exports = function (_path) {
         _appRoot: path.join(_path, 'src', 'app'),
         _images: path.join(_path, 'src', 'assets', 'images'),
         _stylesheets: path.join(_path, 'src', 'assets', 'styles'),
-        _scripts: path.join(_path, 'src', 'assets', 'js')
+        _scripts: path.join(_path, 'src', 'assets', 'js'),
+        _fonts: path.join(_path, 'src', 'assets', 'fonts')
       }
     },
 
@@ -58,6 +59,9 @@ module.exports = function (_path) {
               }
             }
         ]
+      }, {
+        test: /\.haml$/, 
+        loaders: ['haml-haml-loader']
       }, {
         test: /\.js$/,
         exclude: [
@@ -104,18 +108,25 @@ module.exports = function (_path) {
           fallbackLoader: "style-loader",
           loader: stylesLoader
         })
-      }, {
-        test: /\.(woff2|woff|ttf|eot|svg)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      },
+  /*    { test: /\.woff$/, loader: 'url?limit=65000&mimetype=application/font-woff&name=public/fonts/[name]_[hash].[ext]' },
+      { test: /\.woff2$/, loader: 'url?limit=65000&mimetype=application/font-woff2&name=public/fonts/[name]_[hash].[ext]' },
+      { test: /\.[ot]tf$/, loader: 'url?limit=65000&mimetype=application/octet-stream&name=public/fonts/[name]_[hash].[ext]' },
+      { test: /\.eot$/, loader: 'url?limit=65000&mimetype=application/vnd.ms-fontobject&name=public/fonts/[name]_[hash].[ext]' },
+  */     {
+        test: /\.(woff2|woff|ttf|eot)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
           {
             loader: 'url-loader',
             options: {
-              name: 'assets/fonts/[name]_[hash].[ext]'
+              name: 'assets/fonts/[name].[ext]'
             }
           }
         ]
-      }, {
-        test: /\.(jpe?g|png|gif)$/i,
+      },
+  
+       {
+        test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
           {
             loader: 'url-loader',

@@ -1,0 +1,266 @@
+// ----
+// Sass (v3.4.21)
+// Compass (v1.0.3)
+// ----
+
+@function to-string($value) {
+  @return inspect($value);
+}
+
+@function is-null($var){
+  @return type-of($var) == 'null';
+}
+@function is-number($var){
+  @return type-of($var) == 'number';
+}
+@function is-map($var){
+  @return type-of($var) == 'map';
+}
+@function is-list($var){
+  @return type-of($var) == 'list';
+}
+@function is-arglist($var){
+  @return type-of($var) == 'arglist';
+}
+@function is-string($var){
+  @return type-of($var) == 'string';
+}
+
+@mixin background($color: null,$image: null,$repeat: null,$position: null,$size: null){
+  @if(type-of($repeat) != 'null'){
+   @if(($repeat == no-repeat) or ($repeat == no) or ($repeat == 0)){
+     $repeat: no-repeat;
+   }@else if(($repeat == repeat) or ($repeat == yes) or ($repeat == 1)){
+     $repeat: repeat;
+   }@else if(($repeat == repeat-y) or ($repeat == y)){
+     $repeat: repeat-y
+   }@else if(($repeat == repeat-x) or ($repeat == x)){
+     $repeat: repeat-x
+   }
+   
+  }
+  $positionAndSize: if(((type-of($position) != 'null') and (type-of($size) != 'null')), '/', ' ');
+  background:$color $image $repeat $position#{$positionAndSize}$size;
+}
+
+.bg{
+  @include background($repeat:no,$position:center,$size: 100% 100%);
+}
+
+//  @include transition
+//  @include transition(color, $delay:1s);
+//  @include transition(color, 500ms);
+//  @include transition(opacity, 1s, ease-out, 4s);
+//  @include transition((color,opacity), 1s, (ease-in, ease-out), (null,4s));
+
+@mixin transition($property:null,$duration:null,$ease:null,$delay:null){
+  $multiple: false;
+  $len: 1;
+  $max: 1;
+  @each $prop in ($property,$duration,$ease,$delay){
+    @if (type-of($prop) == list){
+      $max: max($max,length($prop));
+      $multiple: true;
+    }
+  }
+  @if($multiple == true){
+    $transition: '';
+    $props: ($property,$duration,$ease,$delay);
+    @for $i from 1 through $max{
+      @each $prop in $props{
+        $newOrOriginal: if(length($prop) < $i, $prop, nth($prop, $i));
+        
+        $transition: str-insert($transition, #{''$newOrOriginal}, str-length($transition)+1);
+      }
+      $comma: if($i != $max, ',', '');
+      $transition: str-insert($transition, $comma, str-length($transition)+1);
+    }
+    transition: unquote($transition);
+  }
+  @else{
+    transition: $property $duration $ease $delay;
+  }
+}
+
+
+
+//  @include absolute
+//  @include absolute($right:50%)
+//  @include absolute(10px) -> top: 10; left: 10; right: 10; bottom: 10;
+//  @include absolute(10px 20px 35px) -> top: 10; left: 15; right: 15; bottom: 20;
+//  @include absolute(10px,20px) -> top: 10; left: 20;
+// @include absolute(10,27,$bottom: 15) -> top: 10; left: 27; bottom: 15;
+@mixin absolute($top:null,$right:null,$bottom:null,$left:null){
+  @if(type-of($top)=='list'){
+      $top: nth($top,1);
+      $right: nth($top,2);
+      $bottom: nth($top,1);
+      $left: nth($top,2);
+    @if(length($top)==3){
+      $bottom: nth($top,3);
+    }
+    @if(length($top)==4){
+      $left: nth($top,4);
+    }
+  }@else if(type-of($top)=='number'){
+    $top: $top;
+    $left: $left;
+    $right: $right;
+    $bottom: $bottom;
+  }
+  position: absolute;
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+}
+
+@function aspect-ratio($width, $height){
+  @return 100%*$height/$width;
+}
+
+// @include wrap;
+// @include wrap(16, 9, 'image.png');
+@mixin wrap($width: 0, $height: null, $img: null){
+  @if (type-of($height) == 'null'){
+    $height: $width;
+  }
+  position: relative;
+  padding-bottom: aspect-ratio($width, $height);
+  height: 0;
+  &:before{
+    content: '';
+    width: 100%;
+    height: 100%;
+    @include absolute;
+    @if(type-of($img) != 'null'){
+      background-size:cover;
+      background-image: url('#{$img}');
+    }
+  }
+}
+
+
+// @include block-shadow(100); -> x:100, y: 100
+// @include block-shadow(100,#333); -> x:100, y: 100, color:#333
+// @include block-shadow(100 50,#333); -> x:100, y: 50, color:#333
+// @include block-shadow(100 50 5,#333); -> x:100, y: 50, blur:5, color:#333
+// @include block-shadow(100 50 5,#333, true); -> x:100, y: 50, blur:5, color:#333, border(1px)
+@mixin block-shadow($num, $color, $border:null) {
+  $numX: $num;
+  $numY: $num;
+  $max: $num;
+  $min: $num;
+  $relX: 1;
+  $relY: 1;
+  $blur: 0;
+  
+  @if(type-of($num)=='list'){
+    @if(type-of(nth($num,1))=='number'){
+      $numX: nth($num,1);
+      $numY: nth($num,2);
+      @if(length($num) > 2){
+        $blur: nth($num,3);
+      }
+      
+      $max: max(nth($num,1),nth($num,2));
+      $min: min(nth($num,1),nth($num,2));
+      $key: if($max == nth($num,1),x,y);
+      $rel: $max/$min;
+      
+      @if($key==x){
+        $relY: $rel;
+      }@else{
+        $relX: $rel;
+      }
+    }@else if(type-of(nth($num,1))=='list'){
+      @each $n in $num{
+        $numX: nth($n,1);
+        $numY: nth($n,2);
+        @if(length($n) > 2){
+          $blur: nth($n,3);
+        }
+        
+        $max: max(nth($n,1),nth($n,2));
+        $min: min(nth($num,1),nth($n,2));
+        $key: if($max == nth($n,1),x,y);
+        $rel: $max/$min;
+        
+        @if($key==x){
+          $relY: $rel;
+        }@else{
+          $relX: $rel;
+        }
+      }
+    }
+  }
+
+  $s:"";
+  @if($border==true) {
+    $s: "1px 1px 0 #{$color}, 1px -1px 0 #{$color}, -1px 1px 0 #{$color}, -1px -1px 0 #{$color}, ";
+  }
+
+/* 
+  $s: if($border==true, 
+    "1px 1px 0 #{$color}, 1px -1px 0 #{$color}, -1px 1px 0 #{$color}, -1px -1px 0 #{$color}, ",
+    ""
+  );
+*/
+
+  @for $i from 1 through $max {
+    $comma: if($i == $max, null, ", ");
+    $s: str-insert($s, #{$relX*$i}px #{$relY*$i}px #{$blur}px $color#{$comma}, str-length($s));
+  }
+
+  text-shadow: #{$s};
+}
+
+
+// @include skew(15vw, 50px, #000); -> width has to be vw
+@mixin skew($vWidth, $height, $bgColor){
+  padding: $height/2 $height;
+  margin: $height 0;
+  position: relative;
+  float:left;
+  height:($height*2);
+  width:$vWidth;
+  background-color: $bgColor;
+  box-sizing: border-box;
+
+  &:before, &:after{
+    content: '';
+    width:0;
+    height:0;
+    display:block;
+    position: absolute;
+    border: $height solid transparent;
+    border-style: solid;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: -10;
+  }
+
+  &:before {
+    border-left-width: 0;
+    border-right-width: $vWidth;
+    border-right-color: $bgColor;
+    bottom: -$height;
+  }
+
+  &:after {
+    border-right-width: 0;
+    border-left-width: $vWidth;
+    border-left-color: $bgColor;
+    top: -$height;
+  }
+}
+
+@mixin selection($selector:'*'){
+  #{$selector}::selection{
+    @content;
+  }
+  #{$selector}::-moz-selection{
+    @content;
+  } 
+}

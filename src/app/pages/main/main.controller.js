@@ -9,6 +9,7 @@ import moment from 'moment';
 
 
 import angularLogo from '_images/angular.png';
+import "_fonts/_fonts.scss";
 
 function MainController($log) {
   'ngInject';
