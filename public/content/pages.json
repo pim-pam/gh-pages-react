@@ -1,6 +1,32 @@
 [
   {
     "slug": {
+      "en": "",
+      "es": ""
+    },
+    "blocks": {
+      "title":{
+        "en": "Homepage",
+        "es": "Inicio"
+      },
+      "text":{
+        "en": "Welcome",
+        "es": "Bienvenido"
+      }
+    },
+    "meta": {
+      "title": {
+        "en": "Homepage",
+        "es": "Inicio"
+      },
+      "description": {
+        "en": "Homepage",
+        "es": "Página de inicio"
+      }
+    }
+  },
+  {
+    "slug": {
       "en": "contact",
       "es": "contacto"
     },
