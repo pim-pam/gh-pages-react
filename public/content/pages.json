@@ -1,0 +1,28 @@
+[
+  {
+    "slug": {
+      "en": "contact",
+      "es": "contacto"
+    },
+    "blocks": {
+      "title":{
+        "en": "Contact",
+        "es": "Contacto"
+      },
+      "text":{
+        "en": "Use this page to contact us",
+        "es": "Puedes contactárnos en esta página"
+      }
+    },
+    "meta": {
+      "title": {
+        "en": "Contact us",
+        "es": "Contáctanos"
+      },
+      "description": {
+        "en": "Contact page",
+        "es": "Página de contacto"
+      }
+    }
+  }
+]
