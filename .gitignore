@@ -1,8 +1,2 @@
-node_modules/
-bower_components/
-.sass-cache/
-.idea/
-.tmp/
-true!ng-annotate/
-dist/
-documents/
+.next
+node_modules
