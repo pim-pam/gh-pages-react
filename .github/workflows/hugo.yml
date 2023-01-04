@@ -44,7 +44,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build with Hugo
-        run: "yarn build"
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
