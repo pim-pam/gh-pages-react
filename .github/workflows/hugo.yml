@@ -38,13 +38,10 @@ jobs:
       - name: Set up Node.js ⚙️
         uses: actions/setup-node@v3
         with:
-          node-version: 16.17
-
-      - name: Enable corepack
-        run: corepack enable
+          node-version: 16
 
       - name: Install yarn
-        run: corepack prepare yarn@stable --activate
+        run: npm install -g yarn
 
       - name: Install dependencies 📦
         run: yarn install --immutable
