@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Hugo
-        uses: ./github/setup-hugo
+        uses: ./.github/setup-hugo
   # Deployment job
   deploy:
     environment:
