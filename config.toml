@@ -1,2 +1,3 @@
+baseURL = 'https://marcllobet.github.io/'
 title = 'marcllobet'
 theme = 'hugo-boss'
