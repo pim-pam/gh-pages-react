@@ -1,7 +1,6 @@
 {
   "name": "marcllobet.github.io",
   "version": "1.0.0",
-  "main": "public/index.html",
   "scripts": {
     "build": "hugo --minify"
   },
